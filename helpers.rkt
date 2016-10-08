@@ -1,0 +1,12 @@
+#lang racket
+(provide (all-defined-out))
+(define (inc a)
+  (+ a 1))
+(define (dec a)
+  (- a 1))
+(define (exercise n m)
+  (printf "--- Exercise ~a.~a\n" n m))
+(define (code n m o)
+  (printf "--- Code ~a.~a.~a\n" n m o))
+(define-syntax-rule (display-eval e)
+  (printf ">>> ~a\n~a\n" 'e e))
