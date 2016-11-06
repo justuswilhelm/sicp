@@ -1,8 +1,8 @@
 #lang racket
 
+(provide (all-defined-out))
+
 (require "../helpers.rkt")
-(require racket/trace)
-(require rackunit)
 
 (exercise 1 1)
 10
@@ -27,8 +27,6 @@
    (+ a 1))
 
 (exercise 1 2)
-(display-eval (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
-                 (* 3 (- 6 2) (- 2 7))))
 
 (exercise 1 3)
 (define (square x) (* x x))
@@ -41,17 +39,14 @@
         ((< c a b) (square-sum a b))
         ((< b c a) (square-sum c a))
         ((< a c b) (square-sum c b))))
-(display-eval (larger-square 1 2 3))
-(display-eval (larger-square 2 3 1))
 
 (exercise 1 4)
-(displayln '(define (a-plus-abs-b a b)
-              ((if (> b 0) + -) a b)))
-(displayln "The if expression allows us to switch the operator used on a and b")
+(define (a-plus-abs-b a b) ((if (> b 0) + -) a b))
+; The if expression allows us to switch the operator used on a and b
 
 (exercise 1 5)
-(displayln "Applicative order would result in an endless recursion because the two if arguments are
-being evaluated regardless of the predicate's result.")
+; Applicative order would result in an endless recursion because the two if
+; arguments are being evaluated regardless of the predicate's result.
 
 (exercise 1 6)
 ; First, the original sqrt
@@ -67,7 +62,6 @@ being evaluated regardless of the predicate's result.")
   (define (good-enough? guess)
     (< (abs (- (square guess) x)) 0.001))
   (sqrt-iter 1.0))
-(display-eval (sqrt 9))
 
 ; Then, our implementation
 (define (new-if predicate then-clause else-clause)
@@ -85,8 +79,7 @@ being evaluated regardless of the predicate's result.")
     (< (abs (- (square guess) x)) 0.001))
   (sqrt-iter 1.0)
   )
-(displayln "All arguments will be evaluated -- since this is not a special form anymore")
-(displayln '(new-sqrt 9))
+; All arguments will be evaluated -- since this is not a special form anymore
 
 (exercise 1 7)
 (define (sqrt-improved x)
@@ -102,7 +95,6 @@ being evaluated regardless of the predicate's result.")
     (let ((change (abs (- (square last-guess) (square guess)))))
       (< (/ change guess) 0.001)))
   (sqrt-iter x 1.0))
-(display-eval (sqrt-improved 9))
 
 (exercise 1 8)
 (define (cube x) (* x x x))
@@ -116,14 +108,12 @@ being evaluated regardless of the predicate's result.")
   (define (improve guess)
     (/ (+ (/ x (square guess)) (* 2 guess)) 3))
   (cube-root-iter 1))
-(display-eval (cube-root 8))
 
 (code 1 2 1)
 (define (factorial n)
   (if (= n 1)
       1
       (* n (factorial (- n 1)))))
-(display-eval (factorial 2))
 (define (factorial-iter n)
   (define (iter product counter max-count)
     (if (> counter max-count)
@@ -132,23 +122,18 @@ being evaluated regardless of the predicate's result.")
               (+ counter 1)
               max-count)))
   (iter 1 1 n))
-(display-eval (factorial 3))
 
 (exercise 1 9)
 (define (new-+-a a b)
   (if (= a 0)
       b
       (inc (new-+-a (dec a) b))))
-(trace new-+-a)
 (define (new-+-b a b)
   (if (= a 0)
       b
       (new-+-b (dec a) (inc b))))
-(trace new-+-b)
-(display-eval (new-+-a 4 5))
-(display-eval (new-+-b 4 5))
-(displayln "The first + describes a recursive process, the second one describes an iterative process
-(tail recusion!)")
+; The first + describes a recursive process, the second one describes an
+; iterative process (tail recusion!)
 
 (exercise 1 10)
 (define (A x y)
@@ -158,23 +143,15 @@ being evaluated regardless of the predicate's result.")
         (else (A (- x 1)
                  (A x (- y 1))))))
 
-(display-eval (A 1 10))
-(display-eval (A 2 4))
-(display-eval (A 3 3))
-
 (define (f n)
   (A 0 n))
 (define (f-simple n)
   (* n 2))
-(display-eval (f 1))
-(display-eval (f-simple 1))
 
 (define (g n)
   (A 1 n))
 (define (g-simple n)
   (expt 2 n))
-(display-eval (g 4))
-(display-eval (g-simple 4))
 
 (define (h n)
   (A 2 n))
@@ -186,16 +163,12 @@ being evaluated regardless of the predicate's result.")
   (if (= n 0)
       0
       (iter n 2)))
-(display-eval (h 4))
-(display-eval (h-simple 4))
 
 ; Example from exercise
 (define (k n)
   (* 5 n n))
 (define (k-simple n)
   (* 5 (square n)))
-(display-eval (k 4))
-(display-eval (k-simple 4))
 
 (code 1 2 2)
 (define (fib n)
@@ -228,7 +201,6 @@ being evaluated regardless of the predicate's result.")
           ((= kinds-of-coins 4) 25)
           ((= kinds-of-coins 5) 50)))
   (cc amount 5))
-(display-eval (count-change 100))
 
 (exercise 1 11)
 (define (f-recur n)
@@ -236,7 +208,6 @@ being evaluated regardless of the predicate's result.")
         (else (+ (f-recur (- n 1))
                  (* 2 (f-recur (- n 2)))
                  (* 3 (f-recur (- n 3)))))))
-(display-eval (f-recur 4))
 
 (define (f-iter n)
   (define (iter a b c count)
@@ -248,8 +219,6 @@ being evaluated regardless of the predicate's result.")
     [2 2]
     [3 4]
     [_ (iter 4 2 1 (- n 4))]))
-(display-eval (f-iter 4))
-(check-eq? (f-recur 4) (f-iter 4))
 
 (exercise 1 12)
 (define (pascal row element)
@@ -261,8 +230,46 @@ being evaluated regardless of the predicate's result.")
                 [right element])
             (+ (pascal (- row 1) left)
                (pascal (- row 1) right)))]))
-(trace pascal)
-(display-eval (pascal 1 1))
-(display-eval (pascal 2 2))
-(display-eval (pascal 3 2))
-(check-eq? (pascal 5 3) 6)
+
+(exercise 1 13)
+; Let's skip this
+
+(exercise 1 14)
+; Let's skip this
+
+(exercise 1 15)
+; already defined above
+; (define (cube x) (* x x x))
+(define (p x) (- (* 3 x) (* 4 (cube x))))
+(define (sine angle)
+  (if (not (> (abs angle) 0.1))
+    angle
+    (p (sine (/ angle 3.0)))))
+; 1) p is applied 5 times for
+;>(sine 12.5)
+; > (sine 4.166666666666667)
+; > >(sine 1.388888888888889)
+; > > (sine 0.462962962962963)
+; > > >(sine 0.154320987654321)
+; 2) the number of steps required is most likely in O(sqrt(n)), as a is
+; continuously divided by a constant
+
+(code 1 2 4)
+(define (expt b n)
+  (if (= n 0)
+    1
+    (* b (expt b (- n 1)))))
+
+(define (expt-iter b n)
+  (define (iter b counter product)
+    (if (= counter 0)
+      product
+      (iter b
+            (- counter 1)
+            (* b product))))
+  (iter b n 1))
+
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
