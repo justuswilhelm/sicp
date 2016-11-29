@@ -273,3 +273,10 @@
   (cond ((= n 0) 1)
         ((even? n) (square (fast-expt b (/ n 2))))
         (else (* b (fast-expt b (- n 1))))))
+
+(define (fast-expt-recur b n)
+  (define (iter b n a)
+    (if (= 0 n)
+      a
+      (iter b 0 a)))
+  (iter b n 1))

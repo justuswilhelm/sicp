@@ -14,3 +14,7 @@
 
 (exercise 1 12)
 (check-eq? (pascal 5 3) 6)
+
+(exercise 1 16)
+(check-eq? (fast-expt-recur 2 0) 1)
+(check-eq? (fast-expt-recur 2 3) 8)
